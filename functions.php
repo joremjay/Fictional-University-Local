@@ -189,6 +189,7 @@ function makeNotePrivate($data, $postarr) {
 }
 
 
+
 add_filter('ai1wm_exclude_content_from_export', 'ignoreCertainFiles');
 
 function ignoreCertainFiles($exclude_filters) {
@@ -219,6 +220,21 @@ class PlaceholderBlock {
 }
 
 new PlaceholderBlock("eventsandblogs");
+new PlaceholderBlock("header");
+new PlaceholderBlock("footer");
+new PlaceholderBlock("singlepost");
+new PlaceholderBlock("page");
+new PlaceholderBlock("blogindex");
+new PlaceholderBlock("programarchive");
+new PlaceholderBlock("singleprogram");
+new PlaceholderBlock("singleprofessor");
+new PlaceholderBlock("mynotes");
+new PlaceholderBlock("campusarchive");
+new PlaceholderBlock("singlecampus");
+new PlaceholderBlock("eventarchive");
+new PlaceholderBlock("singleevent");
+new PlaceholderBlock("pastevents");
+new PlaceholderBlock("archive");
 
 class JSXBlock {
     function __construct($name, $renderCallback = null, $data = null) {
@@ -256,3 +272,17 @@ class JSXBlock {
 new JSXBlock('banner', true, ['fallbackimage' => get_theme_file_uri('/images/library-hero.jpg')]);
 new JSXBlock('genericheading');
 new JSXBlock('genericbutton');
+new JSXBlock('slideshow', true);
+new JSXBlock('slide', true, ['themeimagepath' => get_theme_file_uri('/images/')]);
+
+function myallowedblocks($allowed_block_types, $editor_context) { 
+
+    // if you are on a page or post editor screen
+    if (!empty($editor_context->post)) {
+        return $allowed_block_types;
+    } 
+
+    // if you are on full site editor screen
+    return array('ourblocktheme/header', 'ourblocktheme/footer');
+}
+add_filter('allowed_block_types_all', 'myallowedblocks', 10, 2);
